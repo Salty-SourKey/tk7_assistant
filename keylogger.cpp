@@ -7,23 +7,29 @@
 #define LP 65
 #define RP 83
 
-
-
-
 using namespace std;
 
+bool is_down_2 = false;
+bool is_down_4 = false;
+bool is_down_6 = false;
+bool is_down_8 = false;
+bool is_down_LK = false;
+bool is_down_RK = false;
+bool is_down_LP = false;
+bool is_down_RP = false;
+
+bool is_key_printed[9] = {false, false, false, false, false, false, false, false, false};
+bool is_attack_printed[6] = {false, false, false, false, false, false};
+
+void init_key_printed(){
+    for (int i = 0; i < 9; i++){
+        is_key_printed[i] = false;
+    }
+}
 
 LRESULT CALLBACK keyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
 	PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT) (lParam);
-	bool g_1_pressed = false;
-    bool g_2_pressed = false;
-    bool g_3_pressed = false;
-    bool g_4_pressed = false;
-    bool g_5_pressed = false;
-    bool g_6_pressed = false;
-    bool g_7_pressed = false;
-    bool g_8_pressed = false;
-    bool g_9_pressed = false;
+	
 
 
 	// If key is being pressed
@@ -32,110 +38,152 @@ LRESULT CALLBACK keyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
 
 			//  Move keys
 			case VK_LEFT:
-                if (g_2_pressed)
-                    g_1_pressed = true;
-                else if (g_8_pressed)
-                    g_7_pressed = true;
-                else
-                    g_4_pressed = true;
+                is_down_4 = true;
                 break;
 
 			case VK_RIGHT:
-                if (g_2_pressed)
-                    g_3_pressed = true;
-                else if (g_8_pressed)
-                    g_9_pressed = true;
-                else
-                    g_6_pressed = true;
+                is_down_6 = true;
                 break;
 
 			case VK_UP:
-                if (g_4_pressed)
-                    g_7_pressed = true;
-                else if (g_6_pressed)
-                    g_9_pressed = true;
-                else
-                    g_8_pressed = true;
+                is_down_8 = true;
                 break;
 
 			case VK_DOWN:
-                if (g_4_pressed)
-                    g_1_pressed = true;
-                else if (g_6_pressed)
-                    g_3_pressed = true;
-                else
-                    g_2_pressed = true;
+                is_down_2 = true;
                 break;
 
 			//  Attack keys
 			case LK:
-                if(GetAsyncKeyState(RK) & 0x8000)
-                    cout << "<AK>" << '\n';
-                else
-                    cout << "<LK>" << '\n';
+                is_down_LK = true;
                 break;
 
 			case RK:
-                if(GetAsyncKeyState(LK) & 0x8000)
-                    cout << "<AK>" << '\n';
-                else
-                    cout << "<RK>" << '\n';
+                is_down_RK = true;
                 break;
 
             case LP:
-                if(GetAsyncKeyState(RP) & 0x8000)
-                    cout << "<AP>" << '\n';
-                else
-                    cout << "<LP>" << '\n';
+                is_down_LP = true;
                 break;
 
             case RP:
-                if(GetAsyncKeyState(LP) & 0x8000)
-                    cout << "<AP>" << '\n';
-                else
-                    cout << "<RP>" << '\n';
+                is_down_RP = true;
                 break;
 		}
 	}
 
-    else if (wParam == WM_KEYUP) {
+    if (wParam == WM_KEYUP) {
         switch (p->vkCode) {
+
+            //  Move keys
             case VK_DOWN:
-                g_1_pressed = false;
-                g_2_pressed = false;
-                g_3_pressed = false;
+                is_down_2 = false;
+                init_key_printed();
                 break;
 
             case VK_UP:
-                g_7_pressed = false;
-                g_8_pressed = false;
-                g_9_pressed = false;
+                is_down_8 = false;
+                init_key_printed();
                 break;
 
             case VK_RIGHT:
-                g_3_pressed = false;
-                g_6_pressed = false;
-                g_9_pressed = false;
+                is_down_6 = false;
+                init_key_printed();
                 break;
             
             case VK_LEFT:
-                g_1_pressed = false;
-                g_4_pressed = false;
-                g_7_pressed = false;
+                is_down_4 = false;
+                init_key_printed();
+
+            //  Attack keys
+            case LK:
+                is_down_LK = false;
+                is_attack_printed[0] = false;
+                is_attack_printed[2] = false;
+                break;
+
+			case RK:
+                is_down_RK = false;
+                is_attack_printed[0] = false;
+                is_attack_printed[3] = false;
+                break;
+
+            case LP:
+                is_down_LP = false;
+                is_attack_printed[1] = false;
+                is_attack_printed[4] = false;
+                break;
+
+            case RP:
+                is_down_RP = false;
+                is_attack_printed[1] = false;
+                is_attack_printed[5] = false;
                 break;
         }
-
-        if(g_1_pressed) cout << 1 << '\n';
-        else if(g_2_pressed) cout << 2 << '\n';
-        else if(g_3_pressed) cout << 3 << '\n';
-        else if(g_4_pressed) cout << 4 << '\n';
-        else if(g_5_pressed) cout << 5 << '\n';
-        else if(g_6_pressed) cout << 6 << '\n';
-        else if(g_7_pressed) cout << 7 << '\n';
-        else if(g_8_pressed) cout << 8 << '\n';
-        else if(g_9_pressed) cout << 9 << '\n';
     }
 
+    if (is_down_2 && is_down_4 && !is_key_printed[0]){
+        cout << "\r" << "<1> ";
+        is_key_printed[0] = true;
+    }
+    else if (is_down_2 && is_down_6 && !is_key_printed[2]){
+        cout << "\r" << "<3> ";
+        is_key_printed[2] = true;
+    }
+    else if (is_down_8 && is_down_4 && !is_key_printed[6]){
+        cout << "\r" << "<7> ";
+        is_key_printed[6] = true;
+    }
+    else if (is_down_8 && is_down_6 && !is_key_printed[8]){
+        cout << "\r" << "<9> ";
+        is_key_printed[8] = true;
+    }
+    else if (is_down_2 && !is_key_printed[1]){
+        cout << "\r" << "<2> ";
+        is_key_printed[1] = true;
+    }
+    else if (is_down_4 && !is_key_printed[3]){
+        cout << "\r" << "<4> ";
+        is_key_printed[3] = true;
+    }
+    else if (is_down_6 && !is_key_printed[5]){
+        cout << "\r" << "<6> ";
+        is_key_printed[5] = true;
+    }
+    else if (is_down_8 && !is_key_printed[7]){
+        cout << "\r" << "<8> ";
+        is_key_printed[7] = true;
+    }
+
+    
+    if (is_down_LK && is_down_RK && !is_attack_printed[0]){
+        cout << "\r\n" << "<AK> ";
+        is_attack_printed[0] = true;
+    }
+    else if (is_down_LP && is_down_RP && !is_attack_printed[1]){
+        cout << "\r\n" << "<AP> ";
+        is_attack_printed[1] = true;
+    }
+    else if (is_down_LK && !is_attack_printed[2]){
+        cout << "\r\n" << "<LK> ";
+        is_attack_printed[2] = true;
+    }
+    else if (is_down_RK && !is_attack_printed[3]){
+        cout << "\r\n" << "<RK> ";
+        is_attack_printed[3] = true;
+    }
+    else if (is_down_LP && !is_attack_printed[4]){
+        cout << "\r\n" << "<LP> ";
+        is_attack_printed[4] = true;
+    }
+    else if (is_down_RP && !is_attack_printed[5]){
+        cout << "\r\n" << "<RP> ";
+        is_attack_printed[5] = true;
+    }
+    
+
+    
+    
 	return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
