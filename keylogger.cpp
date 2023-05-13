@@ -8,19 +8,18 @@
 #define RK 88
 #define LP 65
 #define RP 83
-
-#define KEY_DOWN 80
-#define KEY_UP 72
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
+#define AP 91
+#define AK 92
 
 using namespace std;
 
 int main()
 {
     char input;
+    int last_action = 0;
+    int last_direction = 0;
     // [LP, RP, LK, RK, DOWN, LEFT, RIGHT, UP]
-    bool is_down[8] = {false, false, false, false, false, false, false, false};
+    bool is_down[8] = {false};
 
     // Open txt file to write inputs
     ofstream myfile;
@@ -34,7 +33,6 @@ int main()
     Sleep(2000);
     cout << "Start scanning!!!!!!" << '\n';
 
-    
     // Scan input for 2 seconds
     for(int i = 0; i < 60; i++){
         // Scan keyboard input for 1/60 seconds
@@ -73,53 +71,139 @@ int main()
         }
         
         if (is_down[0] && is_down[1]){
-            myfile << "<AP> ";            
+            if(last_action != AP){
+                myfile << "<AP> ";
+                last_action = AP;
+            }
+            else {
+                myfile << "<  > ";
+            }          
         }
         else if(is_down[2] && is_down[3]){
-            myfile << "<AK> ";
+            if(last_action != AK){
+                myfile << "<AK> ";
+                last_action = AK;
+            }
+            else {
+                myfile << "<  > ";
+            }
         }
         else if(is_down[0]){
-            myfile << "<LP> ";
+            if(last_action != LP){
+                myfile << "<LP> ";
+                last_action = LP;
+            }
+            else {
+                myfile << "<  > ";
+            }
         }
         else if(is_down[1]){
-            myfile << "<RP> ";
+            if(last_action != RP){
+                myfile << "<RP> ";
+                last_action = RP;
+            }
+            else {
+                myfile << "<  > ";
+            }
         }
         else if(is_down[2]){
-            myfile << "<LK> ";
+            if(last_action != LK){
+                myfile << "<LK> ";
+                last_action = LK;
+            }
+            else {
+                myfile << "<  > ";
+            }
         }
         else if(is_down[3]){
-            myfile << "<RK> ";
+            if(last_action != RK){
+                myfile << "<RK> ";
+                last_action = RK;
+            }
+            else {
+                myfile << "<  > ";
+            }
         }
         else{
             myfile << "<  > ";
+            last_action = 0;
         }
         
         if(is_down[4] && is_down[5]){
-            myfile << "<1>" << '\n';
+            if(last_direction != 1){
+                myfile << "<1>" << '\n';
+                last_direction = 1;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[4] && is_down[6]){
-            myfile << "<3>" << '\n';
+            if(last_direction != 3){
+                myfile << "<3>" << '\n';
+                last_direction = 3;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[7] && is_down[5]){
-            myfile << "<7>" << '\n';
+            if(last_direction != 7){
+                myfile << "<7>" << '\n';
+                last_direction = 7;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[7] && is_down[6]){
-            myfile << "<9>" << '\n';
+            if(last_direction != 9){
+                myfile << "<9>" << '\n';
+                last_direction = 9;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[4]){
-            myfile << "<2>" << '\n';
+            if(last_direction != 2){
+                myfile << "<2>" << '\n';
+                last_direction = 2;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[5]){
-            myfile << "<4>" << '\n';
+            if(last_direction != 4){
+                myfile << "<4>" << '\n';
+                last_direction = 4;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[6]){
-            myfile << "<6>" << '\n';
+            if(last_direction != 6){
+                myfile << "<6>" << '\n';
+                last_direction = 6;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else if(is_down[7]){
-            myfile << "<8>" << '\n';
+            if(last_direction != 8){
+                myfile << "<8>" << '\n';
+                last_direction = 8;
+            }
+            else {
+                myfile << "< >" << '\n';
+            }
         }
         else{
             myfile << "< >" << '\n';
+            last_direction = 0;
         }
 
 
