@@ -11,11 +11,11 @@
 using namespace std;
 
 void displayMenu(){
-    SetConsoleTitle("Tap Tap Revolution");
+    SetConsoleTitle("TK Assistant");
+    setWindowPosition();
     system("cls");
     system("Color 0f");
-    setWindowPosition(0, 900);
-    setWindowSize(100, 10);
+    setWindowSize(500, 10);
     cout << "_______________  __.    _____                .__          __                 __   \n";
     cout << "\\__    ___/    |/ _|   /  _  \\   ______ _____|__| _______/  |______    _____/  |_ \n";
     cout << "  |    |  |      <    /  /_\\  \\ /  ___//  ___/  |/  ___/\\   __\\__  \\  /    \\   __\\\n";

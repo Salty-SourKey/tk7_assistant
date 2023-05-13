@@ -51,3 +51,10 @@ void Game::printInfo(){
         cout << dirs[i] << " " << moves[i] << endl;
     }
 }
+
+void Game::drawGrid(){
+    system("cls");
+
+
+
+}

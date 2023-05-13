@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-void setWindowPosition(int x, int y);
+void setWindowPosition();
 void setWindowSize(int width, int height);
 void setCursor(int x, int y);
 void setColor(int color);
