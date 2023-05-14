@@ -15,7 +15,8 @@ void displayMenu(){
     setWindowPosition();
     system("cls");
     system("Color 0f");
-    setWindowSize(500, 10);
+    system("mode con: cols=230 lines=13");
+    // setWindowSize(500, 10);
     cout << "_______________  __.    _____                .__          __                 __   \n";
     cout << "\\__    ___/    |/ _|   /  _  \\   ______ _____|__| _______/  |______    _____/  |_ \n";
     cout << "  |    |  |      <    /  /_\\  \\ /  ___//  ___/  |/  ___/\\   __\\__  \\  /    \\   __\\\n";
@@ -45,8 +46,7 @@ void moveMenu(){
             
             Game game;
             game.parse("moves/ºØ±Ç.txt");
-            game.printInfo();
-            // game.play();
+            game.play();
             
         }
         else if(menu == '2'){

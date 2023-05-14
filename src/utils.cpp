@@ -20,35 +20,11 @@ void setWindowPosition()
     int consoleHeight = consoleRect.bottom - consoleRect.top;
 
     // Calculate the position to center the console horizontally and position it at the bottom of the screen
-    int consoleX = (screenWidth - consoleWidth) / 2;
-    int consoleY = screenHeight - 250;
+    int consoleX = 0;
+    int consoleY = screenHeight - 290;
 
     // Move the console window to the desired position
     SetWindowPos(consoleWindow, NULL, consoleX, consoleY, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-}
-
-void setWindowSize(int width, int height)
-{
-    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    // Get the maximum possible size of the console window
-    CONSOLE_SCREEN_BUFFER_INFO bufferInfo;
-    GetConsoleScreenBufferInfo(console, &bufferInfo);
-    COORD maxSize = bufferInfo.dwMaximumWindowSize;
-
-    // Set the console screen buffer size to the maximum possible size
-    if (width > maxSize.X) {
-        width = maxSize.X;
-    }
-    if (height > maxSize.Y) {
-        height = maxSize.Y;
-    }
-    COORD bufferSize = { static_cast<SHORT>(width), static_cast<SHORT>(height) };
-    SetConsoleScreenBufferSize(console, bufferSize);
-
-    // Set the console window size and position
-    SMALL_RECT rect = {0, 0, static_cast<SHORT>(width - 1), static_cast<SHORT>(height - 1)};
-    SetConsoleWindowInfo(console, TRUE, &rect);
 }
 
 void setCursor(int x, int y)
