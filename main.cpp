@@ -16,7 +16,6 @@ void displayMenu(){
     system("cls");
     system("Color 0f");
     system("mode con: cols=230 lines=13");
-    // setWindowSize(500, 10);
     cout << "_______________  __.    _____                .__          __                 __   \n";
     cout << "\\__    ___/    |/ _|   /  _  \\   ______ _____|__| _______/  |______    _____/  |_ \n";
     cout << "  |    |  |      <    /  /_\\  \\ /  ___//  ___/  |/  ___/\\   __\\__  \\  /    \\   __\\\n";
@@ -29,48 +28,37 @@ void displayMenu(){
 }
 
 void moveMenu(){
-    system("Color 0f");
-    printCenter(0x1b, 45, "연습 가능 기술 목록");
-    printCenter(0x0f, 45, "1: 붕권");
-    printCenter(0x0f, 45, "2: 초속풍신권");
-    printCenter(0x0f, 45, "3: 발산+용포");
-    printCenter(0x0f, 45, "0: 뒤로가기");
-
-    int moveChoice = 0;
     char menu;
 
     do{
+        system("Color 0f");
+        system("cls");
+        while(_kbhit()) _getch();
+        printCenter(0x1b, 45, "연습 가능 기술 목록");
+        printCenter(0x0f, 45, "1: 붕권");
+        printCenter(0x0f, 45, "2: 초속풍신권");
+        printCenter(0x0f, 45, "3: 발산+용포");
+        printCenter(0x0f, 45, "0: 뒤로가기");
         menu = getch();
-        if(menu == '1'){
-            cout << "1 is pressed\n";
-            
+        if(menu == '1'){            
             Game game;
             game.parse("moves/붕권.txt");
             game.play();
-            
         }
         else if(menu == '2'){
-            cout << "2 is pressed\n";
-            /*
             Game game;
-            game.parse("../moves/초속풍신권.txt");
+            game.parse("moves/초속풍신권.txt");
             game.play();
-            */
         }
         else if(menu == '3'){
-            cout << "3 is pressed\n";
-            /*
             Game game;
-            game.parse("../moves/발산용포.txt");
+            game.parse("moves/발산용포.txt");
             game.play();
-            */
-
+            
         }
     } while(menu != '0');
 
-    if(menu == '0')
-        displayMenu();
-
+    displayMenu();
 }
 
 int main(){

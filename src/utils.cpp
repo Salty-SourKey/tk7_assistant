@@ -21,7 +21,7 @@ void setWindowPosition()
 
     // Calculate the position to center the console horizontally and position it at the bottom of the screen
     int consoleX = 0;
-    int consoleY = screenHeight - 290;
+    int consoleY = screenHeight - 270;
 
     // Move the console window to the desired position
     SetWindowPos(consoleWindow, NULL, consoleX, consoleY, 0, 0, SWP_NOSIZE | SWP_NOZORDER);

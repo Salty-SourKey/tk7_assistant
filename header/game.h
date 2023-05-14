@@ -16,8 +16,9 @@ class Game
         void drawGrid();
         void clearGrid();
 
-        float frameUnit;                      // 입력 출력 주기
+        float frameUnit;                    // 입력 출력 주기
         std::string moveName;               // 기술 이름
+        std::string tips;                   // 기술 팁
         std::vector<std::string> dirs;      // 방향 입력
         std::vector<std::string> moves;     // 키 입력
 

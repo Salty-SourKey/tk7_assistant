@@ -1,5 +1,5 @@
-붕권
-6 입력 이후에 RP 입력이 이루어져야 합니다
+발산+용포
+AK 입력과 그 이후 66 입력의 차이를 정답과 비교해 보세요
 2.0
 N N
 N N
@@ -9,12 +9,11 @@ N N
 N N
 N N
 N N
-N N
 N 2
 N N
 N 3
 N N
-RP 6
+AK 6
 N N
 N N
 N N
@@ -23,9 +22,22 @@ N N
 N N
 N N
 N N
-N 2
 N N
-N 3
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N 6
+N N
+N N
 N N
 N 6
 RP N
@@ -36,19 +48,7 @@ N N
 N N
 N N
 N N
-N N
-N N
-N N
-N N
-N 2
-N N
-N 3
-N N
-N N
-N 6
-RP N
-N N
-N N
+LP N
 N N
 N N
 N N

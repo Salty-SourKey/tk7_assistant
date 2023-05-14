@@ -1,34 +1,6 @@
-붕권
-6 입력 이후에 RP 입력이 이루어져야 합니다
-2.0
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N 2
-N N
-N 3
-N N
-RP 6
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N 2
-N N
-N 3
-N N
-N 6
-RP N
+초속풍신권
+3 입력과 RP 입력이 동시에 이루어져야 합니다
+1.0
 N N
 N N
 N N
@@ -40,16 +12,44 @@ N N
 N N
 N N
 N N
-N 2
 N N
-N 3
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
 N N
 N N
 N 6
-RP N
 N N
 N N
 N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N 2
+RP 3
+N N
+N 6
 N N
 N N
 N N
