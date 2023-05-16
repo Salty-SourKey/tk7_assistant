@@ -413,7 +413,6 @@ void Game::play(){
 
                 for(int i = 0; i < 8; i++)  is_down[i] = false;
             }
-            cout << frame_record_1 << " " << frame_record_2 << endl;
             if(frame_record_2 - frame_record_1 < this->correctDiff){
                 printColor(0x0e, 30, 0, this->important_input_1_name + "이후 " + this->important_input_2_name + "입력이 빠릅니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + " 칸입니다." );
             }
