@@ -36,6 +36,9 @@ void Game::parse(string dataPath){
     getline(moveData, this->moveName);
     getline(moveData, this->tips);
     moveData >> this->frameUnit;
+    moveData >> this->important_input_1 >> this->important_input_2;
+    moveData >> this->important_input_1_name >> this->important_input_2_name;
+    moveData >> this->correctDiff;
 
     while(!moveData.eof()){
         std::string dir, move;
@@ -107,6 +110,11 @@ void Game::drawGrid(){
 void Game::play(){
     int last_action = 0;
     int last_direction = 0;
+
+    // Save the input timing of important move
+    int frame_record_1 = 0;
+    int frame_record_2 = 0;
+
     // [LP, RP, LK, RK, DOWN, LEFT, RIGHT, UP]
     bool is_down[8] = {false};
     while(_kbhit()) _getch();
@@ -115,12 +123,17 @@ void Game::play(){
     while(true){
         // wait until z and v are pressed together
         if(GetAsyncKeyState(0x5A) && GetAsyncKeyState(0x56)){
+            // Clear the input timing of important move
+            frame_record_1 = 0;
+            frame_record_2 = 0;
+
             for(int i = 0; i < 60; i++){
                 printColor(0x0f, i * 3 + 1, 2, " ");
                 printColor(0x0f, i * 3 + 2, 2, " ");
                 printColor(0x0f, i * 3 + 1, 4, " ");
                 printColor(0x0f, i * 3 + 2, 4, " ");
             }
+            printColor(0x0f, 30, 0, "                                                                                                                                         ");
             printColor(0x0f, 30, 0, "2초 뒤에 입력이 시작됩니다.");
             Sleep(1000);
             printColor(0x0f, 30, 0, "1초 뒤에 입력이 시작됩니다.");
@@ -181,6 +194,12 @@ void Game::play(){
                     if(last_action != AP){
                         printColor(0x0f, i * 3 + 1, 2, "AP");
                         last_action = AP;
+                        if(this->important_input_1 == AP){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == AP){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 2, " ");
@@ -190,6 +209,12 @@ void Game::play(){
                     if(last_action != AK){
                         printColor(0x0f, i * 3 + 1, 2, "AK");
                         last_action = AK;
+                        if(this->important_input_1 == AK){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == AK){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 2, " ");
@@ -199,6 +224,12 @@ void Game::play(){
                     if(last_action != LP){
                         printColor(0x0f, i * 3 + 1, 2, "LP");
                         last_action = LP;
+                        if(this->important_input_1 == LP){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == LP){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 2, " ");
@@ -208,6 +239,12 @@ void Game::play(){
                     if(last_action != RP){
                         printColor(0x0f, i * 3 + 1, 2, "RP");
                         last_action = RP;
+                        if(this->important_input_1 == RP){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == RP){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 2, " ");
@@ -217,6 +254,12 @@ void Game::play(){
                     if(last_action != LK){
                         printColor(0x0f, i * 3 + 1, 2, "LK");
                         last_action = LK;
+                        if(this->important_input_1 == LK){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == LK){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 2, " ");
@@ -226,6 +269,12 @@ void Game::play(){
                     if(last_action != RK){
                         printColor(0x0f, i * 3 + 1, 2, "RK");
                         last_action = RK;
+                        if(this->important_input_1 == RK){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == RK){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 2, " ");
@@ -240,6 +289,12 @@ void Game::play(){
                     if(last_direction != 1){
                         printColor(0x0f, i * 3 + 1, 4, "1");
                         last_direction = 1;
+                        if(this->important_input_1 == 1){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 1){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -249,6 +304,12 @@ void Game::play(){
                     if(last_direction != 3){
                         printColor(0x0f, i * 3 + 1, 4, "3");
                         last_direction = 3;
+                        if(this->important_input_1 == 3){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 3){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -258,6 +319,12 @@ void Game::play(){
                     if(last_direction != 7){
                         printColor(0x0f, i * 3 + 1, 4, "7");
                         last_direction = 7;
+                        if(this->important_input_1 == 7){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 7){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -267,6 +334,12 @@ void Game::play(){
                     if(last_direction != 9){
                         printColor(0x0f, i * 3 + 1, 4, "9");
                         last_direction = 9;
+                        if(this->important_input_1 == 9){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 9){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -276,6 +349,12 @@ void Game::play(){
                     if(last_direction != 2){
                         printColor(0x0f, i * 3 + 1, 4, "2");
                         last_direction = 2;
+                        if(this->important_input_1 == 2){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 2){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -285,6 +364,12 @@ void Game::play(){
                     if(last_direction != 4){
                         printColor(0x0f, i * 3 + 1, 4, "4");
                         last_direction = 4;
+                        if(this->important_input_1 == 4){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 4){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -294,6 +379,12 @@ void Game::play(){
                     if(last_direction != 6){
                         printColor(0x0f, i * 3 + 1, 4, "6");
                         last_direction = 6;
+                        if(this->important_input_1 == 6){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 6){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -303,6 +394,12 @@ void Game::play(){
                     if(last_direction != 8){
                         printColor(0x0f, i * 3 + 1, 4, "8");
                         last_direction = 8;
+                        if(this->important_input_1 == 8){
+                            frame_record_1 = i;
+                        }
+                        else if(this->important_input_2 == 8){
+                            frame_record_2 = i;
+                        }
                     }
                     else {
                         printColor(0x0f, i * 3 + 1, 4, " ");
@@ -316,6 +413,18 @@ void Game::play(){
 
                 for(int i = 0; i < 8; i++)  is_down[i] = false;
             }
+            cout << frame_record_1 << " " << frame_record_2 << endl;
+            if(frame_record_2 - frame_record_1 < this->correctDiff){
+                printColor(0x0e, 30, 0, this->important_input_1_name + "이후 " + this->important_input_2_name + "입력이 빠릅니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + " 칸입니다." );
+            }
+            else if(frame_record_2 - frame_record_1 > this->correctDiff){
+                printColor(0x0e, 30, 0, this->important_input_1_name + "이후 " + this->important_input_2_name + "입력이 느립니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + " 칸입니다.");
+            }
+            else{
+                printColor(0x0e, 30, 0, " 중요 입력의 타이밍은 맞습니다.");
+            }
+            
+            
         }
         // if 0 is pressed, return to the move list
         else if(GetAsyncKeyState(0x30)){
