@@ -1,17 +1,13 @@
-초속풍신권
-↘ 입력과 RP 입력이 동시에 이루어져야 합니다
+원애시드
+타닥 탁탁~ 이 리듬을 기억하세요
 1.0
-↘ RP
-0
-N N
-N N
-N N
-N →
+LK LK
+8
 N N
 N N
 N N
 N N
-N N
+LP N
 N N
 N N
 N N
@@ -19,13 +15,7 @@ N N
 N N
 N N
 N N
-N N
-N ↓
-RP ↘
-N ↓
-N ↘
-N ↓
-N →
+LK N
 N N
 N N
 N N
@@ -37,7 +27,19 @@ N N
 N N
 N N
 N N
-N 6
+N N
+N N
+N N
+N N
+LK N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+LK N
 N N
 N N
 N N
@@ -48,10 +50,8 @@ N N
 N N
 N N
 N N
-N 2
-RP 3
 N N
-N 6
+N N
 N N
 N N
 N N

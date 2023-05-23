@@ -1,9 +1,13 @@
-붕권
-6 입력 이후에 RP 입력이 이루어져야 합니다
-2.0
-6 83
-6 RP
-0
+미스트트랩
+LK LK가 가드되는 타이밍에 RK를 눌러야 합니다
+1.0
+LK RK
+30
+N N
+N N
+N N
+N N
+LK N
 N N
 N N
 N N
@@ -11,27 +15,7 @@ N N
 N N
 N N
 N N
-N N
-N N
-N 2
-N N
-N 3
-N N
-RP 6
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N 2
-N N
-N 3
-N N
-N 6
-RP N
+LK N
 N N
 N N
 N N
@@ -43,13 +27,28 @@ N N
 N N
 N N
 N N
-N 2
-N N
-N 3
 N N
 N N
-N 6
-RP N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+RK N
+N N
+LK N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
 N N
 N N
 N N

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <chrono>
 #include <conio.h>
+#include <set>
 
 #include "game.h"
 #include "utils.h"
@@ -37,7 +38,6 @@ void Game::parse(string dataPath){
     getline(moveData, this->tips);
     moveData >> this->frameUnit;
     moveData >> this->important_input_1 >> this->important_input_2;
-    moveData >> this->important_input_1_name >> this->important_input_2_name;
     moveData >> this->correctDiff;
 
     while(!moveData.eof()){
@@ -108,15 +108,17 @@ void Game::drawGrid(){
 }
 
 void Game::play(){
-    int last_action = 0;
-    int last_direction = 0;
 
     // Save the input timing of important move
-    int frame_record_1 = 0;
-    int frame_record_2 = 0;
+    int frame_record_1;
+    int frame_record_2;
+    int empty_move_cnt = 0;
+    int empty_dir_cnt = 0;
+    string last_move;
+    string last_dir;
+    set<int> moveRecord[60];
+    set<int> dirRecord[60];
 
-    // [LP, RP, LK, RK, DOWN, LEFT, RIGHT, UP]
-    bool is_down[8] = {false};
     while(_kbhit()) _getch();
     drawGrid();
 
@@ -128,7 +130,18 @@ void Game::play(){
                 printColor(0x0f, i * 3 + 2, 2, " ");
                 printColor(0x0f, i * 3 + 1, 4, " ");
                 printColor(0x0f, i * 3 + 2, 4, " ");
+                moveRecord[i].clear();
+                dirRecord[i].clear();
             }
+
+            last_dir = "";
+            last_move = "";
+            frame_record_1 = 0;
+            frame_record_2 = 0;
+
+            // 발산+용포 예외처리
+            if(this->moveName == "발산+용포")
+                this->important_input_2 = "*";
             printColor(0x0f, 30, 0, "                                                                                                                                         ");
             printColor(0x0f, 30, 0, "2초 뒤에 입력이 시작됩니다.");
             Sleep(1000);
@@ -142,296 +155,296 @@ void Game::play(){
                 auto start_time = chrono::high_resolution_clock::now();
                 // loop this scanning process until 1/60 seconds has passed
                 while(true){
-                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit /60.0) {
-                        break;
+
+                    // 이전 프레임 표시 지움
+                    if(i > 0){
+                        printColor(0xff, (i - 1) * 3 + 1, 5, " ");
+                        printColor(0xff, (i - 1) * 3 + 2, 5, " ");
                     }
+                    
+                    // 현재 프레임 표시
+                    printColor(0xaf, i * 3 + 1, 5, " ");
+                    printColor(0xaf, i * 3 + 2, 5, " ");
 
                     // 1 프레임 동안 눌린 키를 저장
                     if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-                        is_down[4] = true;
+                        dirRecord[i].insert(2);
+                    }
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                     if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-                        is_down[5] = true;
+                        dirRecord[i].insert(4);
+                    }
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                     if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-                        is_down[6] = true;
+                        dirRecord[i].insert(6);
+                    }
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                     if (GetAsyncKeyState(VK_UP) & 0x8000) {
-                        is_down[7] = true;
+                        dirRecord[i].insert(8);
                     }
-                    
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
+                    }
                     if (GetAsyncKeyState(LP) & 0x8000) {
-                        is_down[0] = true;
+                        moveRecord[i].insert(65);
+                    }
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                     if (GetAsyncKeyState(RP) & 0x8000) {
-                        is_down[1] = true;
+                        moveRecord[i].insert(83);
+                    }
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                     if (GetAsyncKeyState(LK) & 0x8000) {
-                        is_down[2] = true;
+                        moveRecord[i].insert(90);
+                    }
+
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                     if (GetAsyncKeyState(RK) & 0x8000) {
-                        is_down[3] = true;
+                        moveRecord[i].insert(88);
                     }
-                }
 
-                // 이전 프레임 표시 지움
-                if(i > 0){
-                    printColor(0xff, (i - 1) * 3 + 1, 5, " ");
-                    printColor(0xff, (i - 1) * 3 + 2, 5, " ");
-                }
-                
-                // 현재 프레임 표시
-                printColor(0xaf, i * 3 + 1, 5, " ");
-                printColor(0xaf, i * 3 + 2, 5, " ");
-
-
-                // 키 입력에 따라 표시
-                if (is_down[0] && is_down[1]){
-                    if(last_action != AP){
-                        printColor(0x0f, i * 3 + 1, 2, "AP");
-                        last_action = AP;
-                        if(frame_record_1 == 0 && this->important_input_1 == AP){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == AP){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 2, " ");
-                    }          
-                }
-                else if(is_down[2] && is_down[3]){
-                    if(last_action != AK){
-                        printColor(0x0f, i * 3 + 1, 2, "AK");
-                        last_action = AK;
-                        if(frame_record_1 == 0 && this->important_input_1 == AK){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == AK){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 2, " ");
+                    if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
+                        break;
                     }
                 }
-                else if(is_down[0]){
-                    if(last_action != LP){
-                        printColor(0x0f, i * 3 + 1, 2, "LP");
-                        last_action = LP;
-                        if(frame_record_1 == 0 && this->important_input_1 == LP){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == LP){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 2, " ");
-                    }
-                }
-                else if(is_down[1]){
-                    if(last_action != RP){
-                        printColor(0x0f, i * 3 + 1, 2, "RP");
-                        last_action = RP;
-                        if(frame_record_1 == 0 && this->important_input_1 == RP){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == RP){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 2, " ");
-                    }
-                }
-                else if(is_down[2]){
-                    if(last_action != LK){
-                        printColor(0x0f, i * 3 + 1, 2, "LK");
-                        last_action = LK;
-                        if(frame_record_1 == 0 && this->important_input_1 == LK){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == LK){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 2, " ");
-                    }
-                }
-                else if(is_down[3]){
-                    if(last_action != RK){
-                        printColor(0x0f, i * 3 + 1, 2, "RK");
-                        last_action = RK;
-                        if(frame_record_1 == 0 && this->important_input_1 == RK){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == RK){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 2, " ");
-                    }
-                }
-                else{
-                    printColor(0x0f, i * 3 + 1, 2, " ");
-                    last_action = 0;
-                }
-                
-                if(is_down[4] && is_down[5]){
-                    if(last_direction != 1){
-                        printColor(0x0f, i * 3 + 1, 4, "1");
-                        last_direction = 1;
-                        if(frame_record_1 == 0 && this->important_input_1 == 1){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 1){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[4] && is_down[6]){
-                    if(last_direction != 3){
-                        printColor(0x0f, i * 3 + 1, 4, "3");
-                        last_direction = 3;
-                        if(frame_record_1 == 0 && this->important_input_1 == 3){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 3){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[7] && is_down[5]){
-                    if(last_direction != 7){
-                        printColor(0x0f, i * 3 + 1, 4, "7");
-                        last_direction = 7;
-                        if(frame_record_1 == 0 && this->important_input_1 == 7){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 7){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[7] && is_down[6]){
-                    if(last_direction != 9){
-                        printColor(0x0f, i * 3 + 1, 4, "9");
-                        last_direction = 9;
-                        if(frame_record_1 == 0 && this->important_input_1 == 9){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 9){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[4]){
-                    if(last_direction != 2){
-                        printColor(0x0f, i * 3 + 1, 4, "2");
-                        last_direction = 2;
-                        if(frame_record_1 == 0 && this->important_input_1 == 2){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 2){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[5]){
-                    if(last_direction != 4){
-                        printColor(0x0f, i * 3 + 1, 4, "4");
-                        last_direction = 4;
-                        if(frame_record_1 == 0 && this->important_input_1 == 4){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 4){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[6]){
-                    if(last_direction != 6){
-                        printColor(0x0f, i * 3 + 1, 4, "6");
-                        last_direction = 6;
-                        if(frame_record_1 == 0 && this->important_input_1 == 6){
-                            if(this->moveName == "발산+용포"){
-                                this->moveName = "발산+용포_";
-                                continue;
-                            }
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 6){
-                            if(this->moveName == "발산+용포"){
-                                this->moveName = "발산+용포_";
-                                continue;
-                            }
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else if(is_down[7]){
-                    if(last_direction != 8){
-                        printColor(0x0f, i * 3 + 1, 4, "8");
-                        last_direction = 8;
-                        if(frame_record_1 == 0 && this->important_input_1 == 8){
-                            frame_record_1 = i;
-                        }
-                        else if(frame_record_2 == 0 && this->important_input_2 == 8){
-                            frame_record_2 = i;
-                        }
-                    }
-                    else {
-                        printColor(0x0f, i * 3 + 1, 4, " ");
-                    }
-                }
-                else{
-                    printColor(0x0f, i * 3 + 1, 4, " ");
-                    last_direction = 0;
-                }
-
-
-                for(int i = 0; i < 8; i++)  is_down[i] = false;
             }
             
+
+            // print result
+            for(int i = 0; i < 60; i++){
+                if(empty_dir_cnt >= 2){
+                    last_dir = "";
+                    empty_dir_cnt = 0;
+                }
+
+                if(empty_move_cnt >= 2){
+                    last_move = "";
+                    empty_move_cnt = 0;
+                }
+                if(dirRecord[i].find(2) != dirRecord[i].end() && dirRecord[i].find(4) != dirRecord[i].end()){
+                    if(last_dir == "↙"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "↙");
+                        if(frame_record_1 == 0 && this->important_input_1 == "↙")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "↙")
+                            frame_record_2 = i;
+                        last_dir = "↙";
+                    }
+                }
+                else if(dirRecord[i].find(2) != dirRecord[i].end() && dirRecord[i].find(6) != dirRecord[i].end()){
+                    if(last_dir == "↘"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "↘");
+                        if(frame_record_1 == 0 && this->important_input_1 == "↘")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "↘")
+                            frame_record_2 = i;
+                        last_dir = "↘";
+                    }
+                }
+                else if(dirRecord[i].find(8) != dirRecord[i].end() && dirRecord[i].find(4) != dirRecord[i].end()){
+                    if(last_dir == "↖"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "↖");
+                        if(frame_record_1 == 0 && this->important_input_1 == "↖")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "↖")
+                            frame_record_2 = i;
+                        last_dir = "↖";
+                    }
+                }
+                else if(dirRecord[i].find(8) != dirRecord[i].end() && dirRecord[i].find(6) != dirRecord[i].end()){
+                    if(last_dir == "↗"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "↗");
+                        if(frame_record_1 == 0 && this->important_input_1 == "↗")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "↗")
+                            frame_record_2 = i;
+                        last_dir = "↗";
+                    }
+                }
+
+                else if(dirRecord[i].find(2) != dirRecord[i].end()){
+                    if(last_dir == "↓"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "↓");
+                        if(frame_record_1 == 0 && this->important_input_1 == "↓")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "↓")
+                            frame_record_2 = i;
+                        last_dir = "↓";
+                    }
+                }
+                else if(dirRecord[i].find(4) != dirRecord[i].end()){
+                    if(last_dir == "←"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "←");
+                        if(frame_record_1 == 0 && this->important_input_1 == "←")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "←")
+                            frame_record_2 = i;
+                        last_dir = "←";
+                    }
+                }
+                else if(dirRecord[i].find(6) != dirRecord[i].end()){
+                    if(last_dir == "→"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "→");
+                        if(frame_record_1 == 0 && this->important_input_1 == "→")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "→")
+                            frame_record_2 = i;
+                        
+                        last_dir = "→";
+
+                        //발산+용포 예외처리
+                        if(this->moveName == "발산+용포")
+                            this->important_input_2 = "→";
+                    }
+                }
+                else if(dirRecord[i].find(8) != dirRecord[i].end()){
+                    if(last_dir == "↑"){
+                        goto printMove;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 4, "↑");
+                        if(frame_record_1 == 0 && this->important_input_1 == "↑")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "↑")
+                            frame_record_2 = i;
+                        last_dir = "↑";
+                    }
+                }
+                else{
+                    empty_dir_cnt++;
+                }
+
+                printMove:
+                if(moveRecord[i].find(65) != moveRecord[i].end() && moveRecord[i].find(83) != moveRecord[i].end()){
+                    if(last_move == "AP"){
+                        goto printEnd;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 2, "AP");
+                        if(frame_record_1 == 0 && this->important_input_1 == "AP")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "AP")
+                            frame_record_2 = i;
+                        last_move = "AP";
+                    }
+
+                    
+                }
+                else if(moveRecord[i].find(90) != moveRecord[i].end() && moveRecord[i].find(88) != moveRecord[i].end()){
+                    if(last_move == "AK"){
+                        goto printEnd;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 2, "AK");
+                        if(frame_record_1 == 0 && this->important_input_1 == "AK")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "AK")
+                            frame_record_2 = i;
+                        last_move = "AK";
+                    }
+                }
+                else if(moveRecord[i].find(90) != moveRecord[i].end()){
+                    if(last_move == "LK"){
+                        goto printEnd;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 2, "LK");
+                        if(frame_record_1 == 0 && this->important_input_1 == "LK")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "LK")
+                            frame_record_2 = i;
+                        last_move = "LK";
+                    }
+                }
+                else if(moveRecord[i].find(88) != moveRecord[i].end()){
+                    if(last_move == "RK"){
+                        goto printEnd;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 2, "RK");
+                        if(frame_record_1 == 0 && this->important_input_1 == "RK")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "RK")
+                            frame_record_2 = i;
+                        last_move = "RK";
+                    }
+                }
+                else if(moveRecord[i].find(65) != moveRecord[i].end()){
+                    if(last_move == "LP"){
+                        goto printEnd;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 2, "LP");
+                        if(frame_record_1 == 0 && this->important_input_1 == "LP")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "LP")
+                            frame_record_2 = i;
+                        last_move = "LP";
+                    }
+                }
+                else if(moveRecord[i].find(83) != moveRecord[i].end()){
+                    if(last_move == "RP"){
+                        goto printEnd;
+                    }
+                    else{
+                        printColor(0x0f, i * 3 + 1, 2, "RP");
+                        if(frame_record_1 == 0 && this->important_input_1 == "RP")
+                            frame_record_1 = i;
+                        else if(frame_record_2 == 0 && this->important_input_2 == "RP")
+                            frame_record_2 = i;
+                        last_move = "RP";
+                    }
+                }
+                else{
+                    empty_move_cnt++;
+                }
+
+                printEnd:
+                    continue;
+                
+            }
             if(frame_record_2 - frame_record_1 < this->correctDiff){
-                printColor(0x0e, 30, 0, this->important_input_1_name + " 입력 이후 " + this->important_input_2_name + "입력이 빠릅니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + "칸입니다." );
+                printColor(0x0e, 30, 0, this->important_input_1 + " 입력 이후 " + this->important_input_2 + "입력이 빠릅니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + "칸입니다." );
             }
             else if(frame_record_2 - frame_record_1 > this->correctDiff){
-                printColor(0x0e, 30, 0, this->important_input_1_name + " 입력 이후 " + this->important_input_2_name + "입력이 느립니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + "칸입니다.");
+                printColor(0x0e, 30, 0, this->important_input_1 + " 입력 이후 " + this->important_input_2 + "입력이 느립니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + "칸입니다.");
             }
             else{
                 printColor(0x0e, 30, 0, " 중요 입력의 타이밍은 맞습니다.");
             }
-            frame_record_1 = 0;
-            frame_record_2 = 0;
-            if(this->moveName == "발산+용포_"){
-                this->moveName = "발산+용포";
-            }
-            
+
         }
         // if 0 is pressed, return to the move list
         else if(GetAsyncKeyState(0x30)){

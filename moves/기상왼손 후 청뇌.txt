@@ -1,14 +1,49 @@
-초속풍신권
-↘ 입력과 RP 입력이 동시에 이루어져야 합니다
-1.0
-↘ RP
-0
+기상왼손+청뇌
+청뇌는 ↘ 입력과 RP 입력이 동시에 이루어져야 합니다
+2.0
+LP →
+21
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N ↓
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+LP N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
 N N
 N N
 N N
 N →
 N N
 N N
+LP ↘
 N N
 N N
 N N
@@ -17,41 +52,6 @@ N N
 N N
 N N
 N N
-N N
-N N
-N N
-N ↓
-RP ↘
-N ↓
-N ↘
-N ↓
-N →
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N 6
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N N
-N 2
-RP 3
-N N
-N 6
 N N
 N N
 N N

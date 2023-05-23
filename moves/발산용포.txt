@@ -1,8 +1,7 @@
 발산+용포
-AK 입력과 그 이후 66 입력의 차이를 정답과 비교해 보세요
+AK 입력과 그 이후 → → 입력의 차이를 정답과 비교해 보세요
 2.0
-92 6
-AK 6
+AK *
 22
 N N
 N N
@@ -12,13 +11,11 @@ N N
 N N
 N N
 N N
-N 2
+N ↓
 N N
-N 3
+N ↘
 N N
-AK 6
-N N
-N N
+AK →
 N N
 N N
 N N
@@ -38,11 +35,13 @@ N N
 N N
 N N
 N N
-N 6
+N N
+N N
+N →
 N N
 N N
 N N
-N 6
+N →
 RP N
 N N
 N N

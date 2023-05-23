@@ -43,14 +43,17 @@ void moveMenu(){
         system("cls");
         while(_kbhit()) _getch();
         printCenter(0x1b, 45, "연습 가능 기술 목록");
-        printCenter(0x0f, 45, "1: 붕권");
+        printCenter(0x0f, 45, "1: 벽력장");
         printCenter(0x0f, 45, "2: 초속풍신권");
-        printCenter(0x0f, 45, "3: 발산+용포");
+        printCenter(0x0f, 45, "3: 발산 용포");
+        printCenter(0x0f, 45, "4: 기상왼손 후 청뇌");
+        printCenter(0x0f, 45, "5: 원애시드");
+        printCenter(0x0f, 45, "6: 미스트트랩");
         printCenter(0x0f, 45, "0: 뒤로가기");
         menu = getch();
         if(menu == '1'){            
             Game game;
-            game.parse("moves/붕권.txt");
+            game.parse("moves/벽력장.txt");
             game.play();
         }
         else if(menu == '2'){
@@ -63,6 +66,21 @@ void moveMenu(){
             game.parse("moves/발산용포.txt");
             game.play();
             
+        }
+        else if(menu == '4'){
+            Game game;
+            game.parse("moves/기상왼손 후 청뇌.txt");
+            game.play();
+        }
+        else if(menu == '5'){
+            Game game;
+            game.parse("moves/원애시드.txt");
+            game.play();
+        }
+        else if(menu == '6'){
+            Game game;
+            game.parse("moves/미스트트랩.txt");
+            game.play();
         }
     } while(menu != '0');
 

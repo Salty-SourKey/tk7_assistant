@@ -1,18 +1,8 @@
-초속풍신권
-↘ 입력과 RP 입력이 동시에 이루어져야 합니다
+벽력장
+2타가 맞는 순간 AP를 눌러야 합니다
 1.0
-↘ RP
-0
-N N
-N N
-N N
-N →
-N N
-N N
-N N
-N N
-N N
-N N
+RP AP
+26
 N N
 N N
 N N
@@ -21,11 +11,18 @@ N N
 N N
 N N
 N ↓
-RP ↘
-N ↓
-N ↘
-N ↓
-N →
+N N
+RK N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+N N
+RP N
 N N
 N N
 N N
@@ -37,7 +34,6 @@ N N
 N N
 N N
 N N
-N 6
 N N
 N N
 N N
@@ -48,10 +44,14 @@ N N
 N N
 N N
 N N
-N 2
-RP 3
 N N
-N 6
+N N
+N N
+N N
+AP N
+N N
+N N
+N N
 N N
 N N
 N N
