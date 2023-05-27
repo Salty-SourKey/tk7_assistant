@@ -18,6 +18,7 @@ class Game
 
         float frameUnit;                    // 입력 출력 주기
         std::string moveName;               // 기술 이름
+        std::string command;                // 기술 입력
         std::string tips;                   // 기술 팁
         std::string important_input_1;              // 중요 기술 1
         std::string important_input_2;              // 중요 기술 2

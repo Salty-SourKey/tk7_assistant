@@ -35,6 +35,7 @@ void Game::parse(string dataPath){
     }
 
     getline(moveData, this->moveName);
+    getline(moveData, this->command);
     getline(moveData, this->tips);
     moveData >> this->frameUnit;
     moveData >> this->important_input_1 >> this->important_input_2;
@@ -90,6 +91,7 @@ void Game::drawGrid(){
     printColor(0x17, 220, 8, "|");
 
     printColor(0x07, 0, 0, "기술 이름: " + this->moveName);
+    printColor(0x0f, 182, 0, "커맨드: " + this->command);
     printColor(0x0f, 195, 3, "유저 입력");
     printColor(0x0f, 195, 7, "정답 입력");
     printColor(0x2f, 176, 10, " ");
@@ -253,7 +255,7 @@ void Game::play(){
                         printColor(0x0f, i * 3 + 1, 4, "↘");
                         if(frame_record_1 == 0 && this->important_input_1 == "↘")
                             frame_record_1 = i;
-                        else if(frame_record_2 == 0 && this->important_input_2 == "↘")
+                        else if(frame_record_2 == 0 && this->important_input_2   == "↘")
                             frame_record_2 = i;
                         last_dir = "↘";
                     }

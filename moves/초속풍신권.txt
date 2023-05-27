@@ -1,4 +1,5 @@
 초속풍신권
+→N↓↘RP
 ↘ 입력과 RP 입력이 동시에 이루어져야 합니다
 1.0
 ↘ RP
@@ -22,9 +23,6 @@ N N
 N N
 N ↓
 RP ↘
-N ↓
-N ↘
-N ↓
 N →
 N N
 N N
@@ -37,7 +35,6 @@ N N
 N N
 N N
 N N
-N 6
 N N
 N N
 N N
@@ -48,10 +45,14 @@ N N
 N N
 N N
 N N
-N 2
-RP 3
 N N
-N 6
+N N
+N N
+N N
+N N
+N N
+N N
+N N
 N N
 N N
 N N
