@@ -95,7 +95,7 @@ void Game::drawGrid(){
     printColor(0x0f, 195, 3, "유저 입력");
     printColor(0x0f, 195, 7, "정답 입력");
     printColor(0x2f, 176, 10, " ");
-    printColor(0x0f, 178, 10, "다시 시작하시려면 v와 z키를 동시에 누르세요");
+    printColor(0x0f, 178, 10, "다시 시작하시려면 스페이스바를 누르세요");
     printColor(0x2f, 176, 11, " ");
     printColor(0x0f, 179, 11, "기술 목록으로 돌아가려면 0키를 누르세요");
 
@@ -126,7 +126,7 @@ void Game::play(){
 
     while(true){
         // wait until z and v are pressed together
-        if(GetAsyncKeyState(0x5A) && GetAsyncKeyState(0x56)){
+        if(GetAsyncKeyState(VK_SPACE)){
             for(int i = 0; i < 60; i++){
                 printColor(0x0f, i * 3 + 1, 2, " ");
                 printColor(0x0f, i * 3 + 2, 2, " ");
@@ -145,10 +145,8 @@ void Game::play(){
             if(this->moveName == "발산+용포")
                 this->important_input_2 = "*";
             printColor(0x0f, 30, 0, "                                                                                                                                         ");
-            printColor(0x0f, 30, 0, "2초 뒤에 입력이 시작됩니다.");
-            Sleep(1000);
-            printColor(0x0f, 30, 0, "1초 뒤에 입력이 시작됩니다.");
-            Sleep(1000);
+            printColor(0x0f, 30, 0, "입력이 시작됩니다.");
+            Sleep(500);
             printColor(0x0f, 30, 0, "                           ");
 
             // Scan input for 2 seconds
@@ -437,6 +435,7 @@ void Game::play(){
                     continue;
                 
             }
+            
             if(frame_record_2 - frame_record_1 < this->correctDiff){
                 printColor(0x0e, 30, 0, this->important_input_1 + " 입력 이후 " + this->important_input_2 + "입력이 빠릅니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + "칸입니다." );
             }
