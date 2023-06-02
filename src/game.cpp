@@ -187,7 +187,7 @@ void Game::play(){
                 this->important_input_2 = "*";
             printColor(0x0f, 30, 0, "                                                                                                                                         ");
             printColor(0x0f, 30, 0, "입력이 시작됩니다.");
-            Sleep(500);
+            Sleep(100);
             printColor(0x0f, 30, 0, "                           ");
 
             // Scan input for 2 seconds
