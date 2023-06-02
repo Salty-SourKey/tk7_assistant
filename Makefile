@@ -1,3 +1,5 @@
+CXXFLAGS = -std=c++11
+
 all: main
 
 main: main.cpp header/utils.h src/utils.cpp header/game.h src/game.cpp

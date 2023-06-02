@@ -9,12 +9,27 @@
 #include "game.h"
 #include "utils.h"
 
-#define LK 90
-#define RK 88
-#define LP 65
-#define RP 83
 #define AP 91
 #define AK 92
+
+// a: 65
+// s: 83
+// z: 90
+// x: 88
+
+// u: 85
+// i: 73
+// j: 74
+// k: 75  
+
+// a: 65 
+// d: 68 
+// w: 87 
+// s: 83  
+// VK_LEFT 37
+// VK_RIGHT 39
+// VK_UP 38
+// VK_DOWN 40
 
 using namespace std;
 
@@ -118,11 +133,36 @@ void Game::play(){
     int empty_dir_cnt = 0;
     string last_move;
     string last_dir;
+    string line;
+    vector<int> inputTime;
     set<int> moveRecord[60];
     set<int> dirRecord[60];
 
+    int LP, RP, LK, RK, LEFT, RIGHT, UP, DOWN;
+    ifstream configFile("config.txt");
+    while (getline(configFile, line)){
+        string variable, value;
+        size_t equalsPos = line.find('=');
+
+        if (equalsPos != std::string::npos) {
+            variable = line.substr(0, equalsPos);
+            value = line.substr(equalsPos + 1);
+
+            if(variable == "LP") LP = stoi(value);
+            else if(variable == "RP") RP = stoi(value);
+            else if(variable == "LK") LK = stoi(value);
+            else if(variable == "RK") RK = stoi(value);
+            else if(variable == "LEFT") LEFT = stoi(value);
+            else if(variable == "RIGHT") RIGHT = stoi(value);
+            else if(variable == "UP") UP = stoi(value);
+            else if(variable == "DOWN") DOWN = stoi(value);
+        }
+    }
+
     while(_kbhit()) _getch();
     drawGrid();
+
+
 
     while(true){
         // wait until z and v are pressed together
@@ -140,6 +180,7 @@ void Game::play(){
             last_move = "";
             frame_record_1 = 0;
             frame_record_2 = 0;
+            inputTime.clear();
 
             // 발산+용포 예외처리
             if(this->moveName == "발산+용포")
@@ -167,52 +208,55 @@ void Game::play(){
                     printColor(0xaf, i * 3 + 2, 5, " ");
 
                     // 1 프레임 동안 눌린 키를 저장
-                    if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
+                    if (GetAsyncKeyState(DOWN) & 0x8000) {
                         dirRecord[i].insert(2);
                     }
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
-                    if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+                    if (GetAsyncKeyState(LEFT) & 0x8000) {
                         dirRecord[i].insert(4);
                     }
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
-                    if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+                    if (GetAsyncKeyState(RIGHT) & 0x8000) {
                         dirRecord[i].insert(6);
                     }
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
-                    if (GetAsyncKeyState(VK_UP) & 0x8000) {
+                    if (GetAsyncKeyState(UP) & 0x8000) {
                         dirRecord[i].insert(8);
                     }
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
                     if (GetAsyncKeyState(LP) & 0x8000) {
-                        moveRecord[i].insert(65);
+                        moveRecord[i].insert(LP);
                     }
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
                     if (GetAsyncKeyState(RP) & 0x8000) {
-                        moveRecord[i].insert(83);
+                        moveRecord[i].insert(RP);
                     }
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
                     if (GetAsyncKeyState(LK) & 0x8000) {
-                        moveRecord[i].insert(90);
+                        moveRecord[i].insert(LK);
                     }
 
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
                     }
                     if (GetAsyncKeyState(RK) & 0x8000) {
-                        moveRecord[i].insert(88);
+                        moveRecord[i].insert(RK);
                     }
+
+                  
+
 
                     if (chrono::duration_cast<chrono::duration<double>>(chrono::high_resolution_clock::now() - start_time).count() >= this->frameUnit / 60.0) {
                         break;
@@ -347,7 +391,7 @@ void Game::play(){
                 }
 
                 printMove:
-                if(moveRecord[i].find(65) != moveRecord[i].end() && moveRecord[i].find(83) != moveRecord[i].end()){
+                if(moveRecord[i].find(LP) != moveRecord[i].end() && moveRecord[i].find(RP) != moveRecord[i].end()){
                     if(last_move == "AP"){
                         goto printEnd;
                     }
@@ -358,11 +402,12 @@ void Game::play(){
                         else if(frame_record_2 == 0 && this->important_input_2 == "AP")
                             frame_record_2 = i;
                         last_move = "AP";
+                        inputTime.push_back(i);
                     }
 
                     
                 }
-                else if(moveRecord[i].find(90) != moveRecord[i].end() && moveRecord[i].find(88) != moveRecord[i].end()){
+                else if(moveRecord[i].find(LK) != moveRecord[i].end() && moveRecord[i].find(RK) != moveRecord[i].end()){
                     if(last_move == "AK"){
                         goto printEnd;
                     }
@@ -373,9 +418,10 @@ void Game::play(){
                         else if(frame_record_2 == 0 && this->important_input_2 == "AK")
                             frame_record_2 = i;
                         last_move = "AK";
+                        inputTime.push_back(i);
                     }
                 }
-                else if(moveRecord[i].find(90) != moveRecord[i].end()){
+                else if(moveRecord[i].find(LK) != moveRecord[i].end()){
                     if(last_move == "LK"){
                         goto printEnd;
                     }
@@ -386,9 +432,10 @@ void Game::play(){
                         else if(frame_record_2 == 0 && this->important_input_2 == "LK")
                             frame_record_2 = i;
                         last_move = "LK";
+                        inputTime.push_back(i);
                     }
                 }
-                else if(moveRecord[i].find(88) != moveRecord[i].end()){
+                else if(moveRecord[i].find(RK) != moveRecord[i].end()){
                     if(last_move == "RK"){
                         goto printEnd;
                     }
@@ -399,9 +446,10 @@ void Game::play(){
                         else if(frame_record_2 == 0 && this->important_input_2 == "RK")
                             frame_record_2 = i;
                         last_move = "RK";
+                        inputTime.push_back(i);
                     }
                 }
-                else if(moveRecord[i].find(65) != moveRecord[i].end()){
+                else if(moveRecord[i].find(LP) != moveRecord[i].end()){
                     if(last_move == "LP"){
                         goto printEnd;
                     }
@@ -412,9 +460,10 @@ void Game::play(){
                         else if(frame_record_2 == 0 && this->important_input_2 == "LP")
                             frame_record_2 = i;
                         last_move = "LP";
+                        inputTime.push_back(i);
                     }
                 }
-                else if(moveRecord[i].find(83) != moveRecord[i].end()){
+                else if(moveRecord[i].find(RP) != moveRecord[i].end()){
                     if(last_move == "RP"){
                         goto printEnd;
                     }
@@ -425,6 +474,7 @@ void Game::play(){
                         else if(frame_record_2 == 0 && this->important_input_2 == "RP")
                             frame_record_2 = i;
                         last_move = "RP";
+                        inputTime.push_back(i);
                     }
                 }
                 else{
@@ -435,8 +485,17 @@ void Game::play(){
                     continue;
                 
             }
-            
-            if(frame_record_2 - frame_record_1 < this->correctDiff){
+            if(this->moveName == "원애시드"){
+                vector<int> timeDiff(3, 0);
+                if(inputTime.size( ) > 3){
+                    for(int i = 0; i < inputTime.size() - 1; i++){
+                        timeDiff[i] = inputTime[i + 1] - inputTime[i];
+                    }
+                }
+               
+                printColor(0x0e, 30, 0, "원애시드 커맨드 간 입력 간격은 " + to_string(timeDiff[0]) + " " + to_string(timeDiff[1]) + " " + to_string(timeDiff[2]));
+            }
+            else if(frame_record_2 - frame_record_1 < this->correctDiff){
                 printColor(0x0e, 30, 0, this->important_input_1 + " 입력 이후 " + this->important_input_2 + "입력이 빠릅니다. 두 입력 간 요구되는 차이는 " + to_string(this->correctDiff) + "칸이며, 현재 두 입력의 차이는 " + to_string(frame_record_2 - frame_record_1) + "칸입니다." );
             }
             else if(frame_record_2 - frame_record_1 > this->correctDiff){
